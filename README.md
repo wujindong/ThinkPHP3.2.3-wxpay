@@ -10,7 +10,6 @@
 <h3>配置参数位置：ThinkPHP/Library/Vendor/weixin/WxPay.Config.php，请填写一下参数。</h3>
 <pre>
 <code>
-    ThinkPHP/Library/Vendor/weixin/WxPay.Config.php
 	const APPID = '';
 	const MCHID = '';
 	const SUBMCHID = '';
