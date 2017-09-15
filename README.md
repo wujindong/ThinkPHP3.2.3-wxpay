@@ -17,3 +17,7 @@
 	const APPSECRET = '';
 </code>
 </pre>
+<h3>更新信息</h3>
+<ol>
+    <li>公众号jsapi支付信息回调处理函数  <time>2017-09-15</time></li>
+</ol>
