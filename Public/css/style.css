@@ -1,0 +1,16 @@
+.index,.register_code,.register_info,.check_fail{padding-left: 1rem; padding-right: 1rem;padding-top:1rem;}
+.index .weui_cells:before{border-top: none;}
+.index .weui_label{width: .6rem;}
+.index .title span{margin-left:.8rem;font-size: 1.2rem;}
+.index .weui_cells:after{border-bottom: none;}
+.index .comt{display:block;text-align: right;width: 100%;  margin-top:.5rem;  font-size:.5rem;}
+.index small{display: block;width: 100%;text-align: center;margin-bottom: .5rem;color:#cccccc;}
+.register_info div[class*="img"]{width: 80%;margin: auto;}
+.register_info .weui_cells{margin-top:0;}
+.register_info .weui_panel_hd{color:orange !important;font-weight:700 !important;padding-left:0 !important;font-size: .75rem;}
+.register_info .weui_panel_hd:after{border-bottom: none;}
+.register_info .weui_btn{margin-top:1rem !important; margin-bottom:1rem;font-size:.7rem;letter-spacing: .2rem}
+.register_info .weui_cells{font-size:.6rem}
+.register_info .weui_input{height: auto;}
+.register_code .weui_btn.weui_btn_mini{display:inline-flex;}
+.register_code .weui_btn,.register_code .weui_input,.register_code .weui_label{font-size:.7rem}

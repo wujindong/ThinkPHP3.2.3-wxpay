@@ -1,0 +1,9 @@
+<?php
+define('GATEWAYURL','https://openapi.alipay.com/gateway.do');
+define('APPID','2016090701861500');
+//define('APPID','2017032006303564');
+define('RSAPRIVATEKEYFILEPATH','./key/rsa_private_key.pem');
+define('ALIPAYPUBLICKEY','./key/alipay_public_key.pem');
+define('APIVESION','1.0');
+define('POSTCHARSET','UTF-8');
+define('FORMAT','json');
