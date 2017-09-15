@@ -24,7 +24,7 @@ class WxPayConfig
 	 */
 	const APPID = '';
 	const MCHID = '';
-    const SUBMCHID = '';
+	const SUBMCHID = '';
 	const KEY = '';
 	const APPSECRET = '';
 	
