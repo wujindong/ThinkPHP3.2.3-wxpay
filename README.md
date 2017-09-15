@@ -7,7 +7,7 @@
     <li>H5支付</li>
 </ul>
 <p>注：支付功能开通请参照微信支付相关文档，在测试以上功能时，请务必开通相关功能</p>
-<h3>配置参数位置：ThinkPHP/Library/Vendor/weixin/WxPay.Config.php，请填写一下参数。</h3>
+<h3>配置参数位置：ThinkPHP/Library/Vendor/weixin/WxPay.Config.php，请填写以下参数。</h3>
 <pre>
 <code>
 	const APPID = '';
