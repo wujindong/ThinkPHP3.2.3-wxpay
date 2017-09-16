@@ -10,7 +10,7 @@ class AlipayJsapiController extends Controller {
 
 
     const GATEWAYURL = 'https://openapi.alipay.com/gateway.do';
-    const APPID = '';
+    const APPID = '';//填写APPID
     const APIVESION = '1.0';
     const POSTCHARSET = 'UTF-8';
     const FORMAT = 'json';
@@ -19,8 +19,8 @@ class AlipayJsapiController extends Controller {
 
     public function _initialize(){
         //设置私钥和支付宝公钥（注：在服务器端生成公钥和私钥，把公钥上传到支付宝获取到支付宝公钥）
-        $this->privatekey="";
-        $this->publickey="";
+        $this->privatekey="";//填写公钥文件路径
+        $this->publickey="";//填写私钥文件路径
         vendor("cbcalipay.aop.AopClient");
         vendor("cbcalipay.aop.request.AlipaySystemOauthTokenRequest");
         vendor("cbcalipay.aop.request.AlipayTradeCreateRequest");
