@@ -82,7 +82,7 @@ class AlipayJsapiController extends Controller {
             $data['trade_no']=$responseNode['trade_no'];
             $this->ajaxReturn($data);
         } else {
-            //失败返回先关状态
+            //失败返回相关状态
            $this->ajaxReturn($data);
         }
     }
