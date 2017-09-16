@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>支付宝JSAPI支付</title>
+</head>
+<body>
+<form action="" method="post" id="shop">
+    <div style="margin-left:2%;">商品描述：</div><br/>
+    <input type="text" style="width:96%;height:35px;margin-left:2%;" readonly value="一只小黄鸭" name="subject" /><br /><br />
+    <div style="margin-left:2%;">支付金额：</div><br/>
+    <input type="text" style="width:96%;height:35px;margin-left:2%;" readonly value="1" name="total_amount" /><br /><br />
+    <div align="center">
+        <input type="button" value="支付" id="payButton" style="width:210px; height:50px; border-radius: 15px;background-color:#FE6714; border:0px #FE6714 solid; cursor: pointer;  color:white;  font-size:16px;" />
+    </div>
+</form>
+<script src="__PUBLIC__/js/jquery-2.1.4.js"></script>
+<script type="application/javascript">
+    $(document).ready(function(){
+
+        // 点击payButton按钮后唤起收银台
+        $("#payButton").click(function() {
+            $.get("/milian/index.php/Bing/AlipayJsapi/create_trade",$("#shop").serializeArray(),function (data) {
+                if(data.code=='10000'){
+                    tradePay(data.trade_no);
+                }else{
+                    alert(data.msg)
+                }
+            });
+        });
+        // 通过jsapi关闭当前窗口，仅供参考，更多jsapi请访问
+        $("#closeButton").click(function() {
+            AlipayJSBridge.call('closeWebview');
+        });
+    });
+
+    // 由于js的载入是异步的，所以可以通过该方法，当AlipayJSBridgeReady事件发生后，再执行callback方法
+    function ready(callback) {
+        if (window.AlipayJSBridge) {
+            callback && callback();
+        } else {
+            document.addEventListener('AlipayJSBridgeReady', callback, false);
+        }
+    }
+    function tradePay(tradeNO) {
+        ready(function(){
+            // 通过传入交易号唤起快捷调用方式(注意tradeNO大小写严格)
+            AlipayJSBridge.call("tradePay", {
+                tradeNO: tradeNO
+            }, function (data) {
+                if ("9000" == data.resultCode) {
+                    alert("支付成功");
+                }
+            });
+        });
+    }
+</script>
+</body>
+</html>
