@@ -16,11 +16,13 @@ class AlipayJsapiController extends Controller {
     const FORMAT = 'json';
     private $privatekey='';
     private $publickey='';
+    private $notifyurl='';
 
     public function _initialize(){
         //设置私钥和支付宝公钥（注：在服务器端生成公钥和私钥，把公钥上传到支付宝获取到支付宝公钥）
         $this->privatekey="";//填写公钥文件路径
         $this->publickey="";//填写私钥文件路径
+        $this->notifyurl='http://'.$_SERVER['HTTP_HOST'].U("Bing/AlipayJsapi/notifyUrl");//设置异步回调地址
         vendor("cbcalipay.aop.AopClient");
         vendor("cbcalipay.aop.request.AlipaySystemOauthTokenRequest");
         vendor("cbcalipay.aop.request.AlipayTradeCreateRequest");
@@ -63,6 +65,7 @@ class AlipayJsapiController extends Controller {
         $aop->rsaPrivateKeyFilePath = $this->privatekey;
         $aop->alipayPublicKey = $this->publickey;
         $request_create_trade = new \AlipayTradeCreateRequest();
+        $request_create_trade->setNotifyUrl($this->notifyurl);
 
         $orderInfo = array(
             'out_trade_no' => date("YmdHis"),
@@ -84,6 +87,29 @@ class AlipayJsapiController extends Controller {
         } else {
             //失败返回相关状态
            $this->ajaxReturn($data);
+        }
+    }
+
+
+    /**
+     * 支付结果回调通知
+     */
+    public  function notifyUrl(){
+        $data=I('get.');
+        Log::write(var_export($data,true));
+        switch ($data['notify_type']){
+            case 'tradeStatus.TRADE_CLOSED':
+                //交易关闭
+                break;
+            case 'tradeStatus.TRADE_FINISHED':
+                //交易完结
+                break;
+            case 'tradeStatus.TRADE_SUCCESS':
+                //支付成功
+                break;
+            case 'tradeStatus.WAIT_BUYER_PAY':
+                //交易创建
+                break;
         }
     }
 }
