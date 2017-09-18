@@ -9,11 +9,13 @@ class AlipayBaseController extends Controller{
     const FORMAT = 'json';
     protected $privatekey='';
     protected $publickey='';
+    protected $notifyurl='';
 
     public function _initialize(){
         //设置私钥和支付宝公钥（注：在服务器端生成公钥和私钥，把公钥上传到支付宝获取到支付宝公钥）
         $this->privatekey="";//填写私钥路径
         $this->publickey="";//填写支付宝公钥路径
+        $this->notifyurl="";//填写异步回调地址
         vendor("cbcalipay.aop.AopClient");
         vendor("cbcalipay.aop.request.AlipaySystemOauthTokenRequest");
         vendor("cbcalipay.aop.request.AlipayTradeCreateRequest");
