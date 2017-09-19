@@ -42,9 +42,9 @@ class AlipayBaseController extends Controller{
         );
 
         $request_trade_query->setBizContent(json_encode($data));
-        $callbackJsonString=$aop->execute($request_trade_query);
-        $result=json_decode($callbackJsonString,true);
-        $trade_data=$result['alipay_trade_query_response'];
+        $callbackJsonString=(array)$aop->execute($request_trade_query);
+
+        $trade_data=(array)$callbackJsonString['alipay_trade_query_response'];
         if($trade_data['code']=='10000') {
             if ($trade_data['trade_status'] == 'WAIT_BUYER_PAY') {
                 //交易创建，等待买家付款
@@ -60,4 +60,8 @@ class AlipayBaseController extends Controller{
 
         }
     }
+
+
+
+
 }
