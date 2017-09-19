@@ -20,5 +20,44 @@ class AlipayBaseController extends Controller{
         vendor("cbcalipay.aop.request.AlipaySystemOauthTokenRequest");
         vendor("cbcalipay.aop.request.AlipayTradeCreateRequest");
         vendor("cbcalipay.aop.request.AlipayTradeWapPayRequest");
+        vendor("cbcalipay.aop.request.AlipayTradeQueryRequest");
+    }
+
+    /**
+     * 交易结果查询
+     * @param $out_trade_no
+     * @param $trade_no
+     */
+    public  function tradeQuery($out_trade_no,$trade_no){
+
+
+        $aop = new \AopClient();
+        $aop->appId = self::APPID;
+        $aop->rsaPrivateKeyFilePath = $this->privatekey;
+        $aop->alipayPublicKey = $this->publickey;
+        $request_trade_query=new \AlipayTradeQueryRequest();
+        $data=array(
+            "out_trade_no"=>$out_trade_no,
+            "trade_no"=>$trade_no
+        );
+
+        $request_trade_query->setBizContent(json_encode($data));
+        $callbackJsonString=$aop->execute($request_trade_query);
+        $result=json_decode($callbackJsonString,true);
+        $trade_data=$result['alipay_trade_query_response'];
+        if($trade_data['code']=='10000') {
+            if ($trade_data['trade_status'] == 'WAIT_BUYER_PAY') {
+                //交易创建，等待买家付款
+            } else if ($trade_data['trade_status'] == 'TRADE_CLOSED') {
+                //未付款交易超时关闭，或支付完成后全额退款
+            } else if ($trade_data['trade_status'] == 'TRADE_SUCCESS') {
+                //交易支付成功
+            } else if ($trade_data['trade_status'] === 'TRADE_FINISHED') {
+                //交易结束，不可退款
+            }
+        }else{
+            //接口调用失败
+
+        }
     }
 }
