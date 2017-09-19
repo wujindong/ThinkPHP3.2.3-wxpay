@@ -21,6 +21,9 @@ class AlipayBaseController extends Controller{
         vendor("cbcalipay.aop.request.AlipayTradeCreateRequest");
         vendor("cbcalipay.aop.request.AlipayTradeWapPayRequest");
         vendor("cbcalipay.aop.request.AlipayTradeQueryRequest");
+        vendor("cbcalipay.aop.request.AlipayTradeCloseRequest");
+        vendor("cbcalipay.aop.request.AlipayTradeRefundRequest");
+        vendor("cbcalipay.aop.request.AlipayTradeFastpayRefundQueryRequest");
     }
 
     /**
@@ -59,6 +62,94 @@ class AlipayBaseController extends Controller{
             //接口调用失败
 
         }
+    }
+
+    /**
+     * 关闭交易
+     * @param $trade_no
+     * @param $out_trade_no
+     * @param $operator_id
+     */
+    public function tradeClose($trade_no,$out_trade_no,$operator_id){
+        $aop = new \AopClient();
+        $aop->appId = self::APPID;
+        $aop->rsaPrivateKeyFilePath = $this->privatekey;
+        $aop->alipayPublicKey = $this->publickey;
+        $requst_trade_clode= new \AlipayTradeCloseRequest();
+        $data=array(
+            'trade_no'=>$trade_no,
+            'out_trade_no'=>$out_trade_no,
+            'operator_id'=>$operator_id
+        );
+
+        $requst_trade_clode->setBizContent(json_encode($data));
+        $result=(array)$aop->execute($requst_trade_clode);
+        $closeResponse=(array)$result['alipay_trade_close_response'];
+
+        if($closeResponse['code']=='10000'){
+            //成功
+        }else{
+            //失败
+        }
+    }
+
+    /**
+     * 交易退款
+     * @param $trade_no
+     * @param $out_trade_no
+     * @param $refund_amount 退款金额
+     */
+    public function tradeRefund($trade_no,$out_trade_no,$refund_amount){
+        $aop = new \AopClient();
+        $aop->appId = self::APPID;
+        $aop->rsaPrivateKeyFilePath = $this->privatekey;
+        $aop->alipayPublicKey = $this->publickey;
+        $request_trade_refund=new \AlipayTradeRefundRequest();
+        $data=array(
+            'trade_no'=>$trade_no,
+            'out_trade_no'=>$out_trade_no,
+            'refund_amount'=>$refund_amount
+        );
+        $request_trade_refund->setBizContent(json_encode($data));
+        $result=(array)$aop->execute($request_trade_refund);
+        $refundResponse=(array)$result['alipay_trade_refund_response'];
+
+        if($refundResponse['code']=='10000'){
+            //成功
+        }else{
+            //失败
+        }
+
+    }
+
+
+    /**
+     * 交易退款查询
+     * @param $trade_no
+     * @param $out_trade_no
+     * @param $out_request_no
+     */
+    public function tradeRefunQuery($trade_no,$out_trade_no,$out_request_no){
+        $aop = new \AopClient();
+        $aop->appId = self::APPID;
+        $aop->rsaPrivateKeyFilePath = $this->privatekey;
+        $aop->alipayPublicKey = $this->publickey;
+        $request_trade_refund_query=new \AlipayTradeFastpayRefundQueryRequest();
+        $data=array(
+            'trade_no'=>$trade_no,
+            'out_trade_no'=>$out_trade_no,
+            'out_request_no'=>$out_request_no
+        );
+        $request_trade_refund_query->setBizContent(json_encode($data));
+        $result=(array)$aop->execute($request_trade_refund_query);
+        $refundQueryResponse=(array)$result['alipay_trade_fastpay_refund_query_response'];
+
+        if($refundQueryResponse['code']=='10000'){
+            //成功
+        }else{
+            //失败
+        }
+
     }
 
 
