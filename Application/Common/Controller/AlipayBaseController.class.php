@@ -24,6 +24,7 @@ class AlipayBaseController extends Controller{
         vendor("cbcalipay.aop.request.AlipayTradeCloseRequest");
         vendor("cbcalipay.aop.request.AlipayTradeRefundRequest");
         vendor("cbcalipay.aop.request.AlipayTradeFastpayRefundQueryRequest");
+        vendor("cbcalipay.aop.request.AlipayDataDataserviceBillDownloadurlQueryRequest");
     }
 
     /**
@@ -150,6 +151,35 @@ class AlipayBaseController extends Controller{
             //失败
         }
 
+    }
+
+
+    /**
+     * 查询对账单下载地址
+     * @param $bill_type :trade,signcustomer trade指商户基于支付宝交易收单的业务账单；signcustomer是指基于商户支付宝余额收入及支出等资金变动的帐务账单
+     * @param $bill_date :账单时间：日账单格式为yyyy-MM-dd，月账单格式为yyyy-MM。
+     * @return $bill_download_url 账单下载地址链接，获取连接后30秒后未下载，链接地址失效
+     */
+    public  function downLoadUrlQuery($bill_type,$bill_date){
+        $aop = new \AopClient();
+        $aop->appId = self::APPID;
+        $aop->rsaPrivateKeyFilePath = $this->privatekey;
+        $aop->alipayPublicKey = $this->publickey;
+        $request_download_url_query=new \AlipayDataDataserviceBillDownloadurlQueryRequest();
+        $data=array(
+            'bill_type'=>$bill_type,
+            'bill_date'=>$bill_date
+        );
+        $request_download_url_query->setBizContent(json_encode($data));
+        $result=(array)$aop->execute($request_download_url_query);
+        $downLoadUrlResponse=(array)$result['alipay_data_dataservice_bill_downloadurl_query_response'];
+        if($downLoadUrlResponse['code']=='10000'){
+            //成功
+            return $downLoadUrlResponse['bill_download_url'];
+
+        }else{
+            //失败
+        }
     }
 
 
