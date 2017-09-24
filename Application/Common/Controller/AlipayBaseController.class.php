@@ -9,7 +9,9 @@ class AlipayBaseController extends Controller{
     const FORMAT = 'json';
     protected $privatekey='';
     protected $publickey='';
-    protected $notifyurl='';
+    protected $notifyurl='';//异步通知地址
+    protected $returnurl='';//同步跳转地址
+    public $signtype = "RSA";////签名方式
 
     public function _initialize(){
         //设置私钥和支付宝公钥（注：在服务器端生成公钥和私钥，把公钥上传到支付宝获取到支付宝公钥）
@@ -20,6 +22,7 @@ class AlipayBaseController extends Controller{
         vendor("cbcalipay.aop.request.AlipaySystemOauthTokenRequest");
         vendor("cbcalipay.aop.request.AlipayTradeCreateRequest");
         vendor("cbcalipay.aop.request.AlipayTradeWapPayRequest");
+        vendor("cbcalipay.aop.request.AlipayTradePagePayRequest");
         vendor("cbcalipay.aop.request.AlipayTradeQueryRequest");
         vendor("cbcalipay.aop.request.AlipayTradeCloseRequest");
         vendor("cbcalipay.aop.request.AlipayTradeRefundRequest");
@@ -183,6 +186,15 @@ class AlipayBaseController extends Controller{
     }
 
 
-
-
+    /**
+     * 验签方法
+     * @param $arr 验签支付宝返回的信息，使用支付宝公钥。
+     * @return boolean
+     */
+    function check($arr){
+        $aop = new \AopClient();
+        $aop->alipayPublicKey= $this->publickey;
+        $result = $aop->rsaCheckV1($arr, $this->publickey, $this->signtype);
+        return $result;
+    }
 }
